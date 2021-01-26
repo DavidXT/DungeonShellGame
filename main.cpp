@@ -2,19 +2,50 @@
 #include <iostream>
 
 void move();
+void generateExit();
+void roomGeneration();
+void generateRandomStart();
+void checkRoom();
+void checkTreasure(Player playerdata);
+void checkMap();
+void checkPlayerStatus();
+void checkAction();
+void fightMonster();
 
-int HP= 5;
+Player player;
+int HP = 5;
+std::string userInput;
 
 int main()
 {
     std::cout << "----- Game Start ! -----\n";
     do
     {
-        std::cout << '\n' << "- Press a start to start the game";
+        std::cout << '\n' << "Press start to start the game\n";
     } while (std::cin.get() != '\n');
-    while (HP > 0) {
-        move();
-        HP--;
-    }
+    generateRandomStart();
+    generateExit();
+    roomGeneration();
+    do {
+        checkAction();
+        std::cin >> userInput;
+        if (userInput == "D" || userInput == "d") {
+            move();
+            checkRoom();
+        }
+        if (userInput == "M" || userInput == "m") {
+            checkMap();
+        }
+        if (userInput == "T" || userInput == "t") {
+            checkTreasure(player);
+        }
+        if (userInput == "S" || userInput == "s") {
+            checkPlayerStatus();
+        }
+        if (userInput == "F" || userInput == "f") {
+            fightMonster();
+        }
+    } while (HP > 0);
+    std::cout << "---- GAME OVER ----";
 }
 
