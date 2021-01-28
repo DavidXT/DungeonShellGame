@@ -1,5 +1,5 @@
-#include "Player.h"
 #include "Ennemy.h"
+#include "Player.h"
 #pragma once
 
 class Room
@@ -20,8 +20,7 @@ public:
 	void generateExit();
 	void move();
 	void checkAction();
-	void checkTreasure(Player);
-	void fightMonster(Player,Ennemy);
+	void checkTreasure(Player*);
 protected:
 	int tailleDungeon = 10;
 	Room gameRoom[10][10];

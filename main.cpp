@@ -2,7 +2,7 @@
 #include "Player.h"
 #include <iostream>
 
-Player P(20, 5, 0);
+Player *P = new Player(20, 5, 0);
 Ennemy E(20,2,0);
 Dungeon Test;
 std::string userInput;
@@ -34,13 +34,13 @@ int main()
             Test.checkTreasure(P);
         }
         if (userInput == "S" || userInput == "s") {
-            P.checkPlayerStatus();
+            P->checkPlayerStatus();
         }
         if (userInput == "F" || userInput == "f") {
-            Test.fightMonster(P,E);
+            P->fightMonster(E);
             
         }
-    } while (P.getHealth() > 0);
+    } while (P->getHealth() > 0);
     std::cout << "---- GAME OVER ----";
 }
 

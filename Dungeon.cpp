@@ -79,13 +79,13 @@ void Dungeon::move()
     if (coordY < tailleDungeon) {
         std::cout << "[N]orth ";
     }
-    if (coordY >= 0) {
+    if (coordY > 0) {
         std::cout << "[S]outh ";
     }
     if (coordX < tailleDungeon) {
         std::cout << "[E]st ";
     }
-    if (coordX >= 0) {
+    if (coordX > 0) {
         std::cout << "[W]est";
     }
     std::cout << "\n";
@@ -93,13 +93,13 @@ void Dungeon::move()
     if ((user == "n" || user == "N") && coordY < tailleDungeon) {
         coordY++;
     }
-    if ((user == "s" || user == "S") && coordY >= 0) {
+    if ((user == "s" || user == "S") && coordY > 0) {
         coordY--;
     }
     if ((user == "e" || user == "E") && coordX < tailleDungeon) {
         coordX++;
     }
-    if ((user == "w" || user == "W") && coordX >= 0) {
+    if ((user == "w" || user == "W") && coordX > 0) {
         coordX--;
     }
 }
@@ -120,7 +120,7 @@ void Dungeon::checkAction() {
 }
 
 
-void Dungeon::checkTreasure(Player p) {
+void Dungeon::checkTreasure(Player *p) {
     if (gameRoom[coordX][coordY].treasure == true) {
         std::cout << "Open Treasure? [Y]es [N]o\n";
         do {
@@ -129,9 +129,9 @@ void Dungeon::checkTreasure(Player p) {
         if (user == "Y") {
             std::cout << "Treasure opened\n";
             int tempMoney = rand() % 30 + 20;
-            p.gainMoney(tempMoney);
+            p->gainMoney(tempMoney);
             std::cout << "+" << tempMoney << "golds!\n";
-            std::cout << "Total : " << p.getMoney() << "golds!";
+            std::cout << "Total : " << p->getMoney() << "golds!";
             gameRoom[coordX][coordY].treasure = false;
         }
         if (user == "N") {
@@ -143,20 +143,5 @@ void Dungeon::checkTreasure(Player p) {
     }
 }
 
-void Dungeon::fightMonster(Player p, Ennemy E) {
-    do {
-        std::cout << "Le joueur attaque!\n";
-        E.getDamage(1);
-        std::cout << E.getHealth() << "HP restant.\n";
-        if (E.getHealth() > 0) {
-            std::cout << "Le monstre attaque!\n";
-            p.getDamage(1);
-            std::cout << p.getHealth() << "HP restant.\n";
-        }
-        else {
-            std::cout << "Le monstre est mort!";
-        }
-    } while (p.getHealth() > 0 && E.getHealth() > 0);
-}
 
 
