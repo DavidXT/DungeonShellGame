@@ -1,19 +1,10 @@
 #include "Dungeon.h"
+#include "Player.h"
 #include <iostream>
 
-void move();
-void generateExit();
-void roomGeneration();
-void generateRandomStart();
-void checkRoom();
-void checkTreasure(Player playerdata);
-void checkMap();
-void checkPlayerStatus();
-void checkAction();
-void fightMonster();
-
-Player player;
-int HP = 5;
+Player P(20, 5, 0);
+Ennemy E(20,2,0);
+Dungeon Test;
 std::string userInput;
 
 int main()
@@ -23,29 +14,33 @@ int main()
     {
         std::cout << '\n' << "Press start to start the game\n";
     } while (std::cin.get() != '\n');
-    generateRandomStart();
-    generateExit();
-    roomGeneration();
+    srand(time(NULL));
+    Test.generateRandomStart();
+    Test.generateExit();
+    Test.roomGeneration();
     do {
-        checkAction();
+        Test.checkAction();
         std::cin >> userInput;
         if (userInput == "D" || userInput == "d") {
-            move();
-            checkRoom();
+            Test.move();
+            srand(time(NULL));
+            Test.checkRoom();
         }
         if (userInput == "M" || userInput == "m") {
-            checkMap();
+            Test.checkMap();
         }
         if (userInput == "T" || userInput == "t") {
-            checkTreasure(player);
+            srand(time(NULL));
+            Test.checkTreasure(P);
         }
         if (userInput == "S" || userInput == "s") {
-            checkPlayerStatus();
+            P.checkPlayerStatus();
         }
         if (userInput == "F" || userInput == "f") {
-            fightMonster();
+            Test.fightMonster(P,E);
+            
         }
-    } while (HP > 0);
+    } while (P.getHealth() > 0);
     std::cout << "---- GAME OVER ----";
 }
 

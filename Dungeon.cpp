@@ -1,19 +1,9 @@
 #include "Dungeon.h"
 #include <iostream>
 
-
-int coordX, coordY;
-int winX, winY;
-int tailleDungeon = 10;
-bool gameMap[10][10];
-Room gameRoom[10][10];
-char player = 'P';
-char map = '#';
 std::string user;
-Player PlayerData;
 
-
-void roomGeneration() {
+void Dungeon::roomGeneration() {
     std::cout << "\n";
     for (int i = tailleDungeon; i>= 0; i--) {
         for (int j = 0; j <= tailleDungeon; j++) {
@@ -30,12 +20,9 @@ void roomGeneration() {
     }
 }
 
-void checkPlayerStatus() {
-    std::cout << "\nPlayer Stats : \nHP : " << PlayerData.getHealth() << 
-        "\nSTR :" << PlayerData.getStrenght() << "\nGold :" <<PlayerData.getMoney() << "\n";
-}
 
-void checkMap() {
+
+void Dungeon::checkMap() {
     std::cout << "\n";
     std::cout << "Player location : " << coordX << ", " << coordY << "\n";
     for (int i = tailleDungeon; i >= 0; i--) {
@@ -51,7 +38,7 @@ void checkMap() {
     }
 }
 
-void checkRoom() {
+void Dungeon::checkRoom() {
     if (gameMap[coordX][coordY]) {
         std::cout << "Room already explored !\n";
     }
@@ -76,19 +63,19 @@ void checkRoom() {
     }
 }
 
-void generateRandomStart() {
+void Dungeon::generateRandomStart() {
     coordX = rand() % 10;
     coordY = rand() % 10;
 }
 
-void generateExit() {
+void Dungeon::generateExit() {
     winX = rand() % 10;
     winY = rand() % 10;
 }
 
-void move()
+void Dungeon::move()
 {
-    std::cout << "\Go to :";
+    std::cout << "\nGo to :";
     if (coordY < tailleDungeon) {
         std::cout << "[N]orth ";
     }
@@ -117,7 +104,7 @@ void move()
     }
 }
 
-void checkAction() {
+void Dungeon::checkAction() {
     if (coordX == winX && coordY == winY) {
         std::cout << "You found the exit!! \nPress [E] to end the game\n";
     }
@@ -133,7 +120,7 @@ void checkAction() {
 }
 
 
-void checkTreasure(Player playerData) {
+void Dungeon::checkTreasure(Player p) {
     if (gameRoom[coordX][coordY].treasure == true) {
         std::cout << "Open Treasure? [Y]es [N]o\n";
         do {
@@ -142,9 +129,9 @@ void checkTreasure(Player playerData) {
         if (user == "Y") {
             std::cout << "Treasure opened\n";
             int tempMoney = rand() % 30 + 20;
-            playerData.gainMoney(tempMoney);
+            p.gainMoney(tempMoney);
             std::cout << "+" << tempMoney << "golds!\n";
-            std::cout << "Total : " << playerData.getMoney() << "golds!";
+            std::cout << "Total : " << p.getMoney() << "golds!";
             gameRoom[coordX][coordY].treasure = false;
         }
         if (user == "N") {
@@ -156,8 +143,20 @@ void checkTreasure(Player playerData) {
     }
 }
 
-void fightMonster() {
-    //Fight Monster Here
+void Dungeon::fightMonster(Player p, Ennemy E) {
+    do {
+        std::cout << "Le joueur attaque!\n";
+        E.getDamage(1);
+        std::cout << E.getHealth() << "HP restant.\n";
+        if (E.getHealth() > 0) {
+            std::cout << "Le monstre attaque!\n";
+            p.getDamage(1);
+            std::cout << p.getHealth() << "HP restant.\n";
+        }
+        else {
+            std::cout << "Le monstre est mort!";
+        }
+    } while (p.getHealth() > 0 && E.getHealth() > 0);
 }
 
 

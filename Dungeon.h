@@ -1,7 +1,6 @@
+#include "Player.h"
+#include "Ennemy.h"
 #pragma once
-class Dungeon
-{
-};
 
 class Room
 {
@@ -10,16 +9,27 @@ public :
 	bool ennemy;
 };
 
-class Player {
-public :
-	void getDamage(int dmg) { health -= dmg; }
-	void gainMoney(int gold) { money += gold; }
-	int getHealth() { return health; }
-	int getStrenght() { return strenght; }
-	int getMoney() { return money; }
-protected :
-	int health;
-	int strenght;
-	int money;
+
+class Dungeon
+{
+public:
+	void roomGeneration();
+	void checkMap();
+	void checkRoom();
+	void generateRandomStart();
+	void generateExit();
+	void move();
+	void checkAction();
+	void checkTreasure(Player);
+	void fightMonster(Player,Ennemy);
+protected:
+	int tailleDungeon = 10;
+	Room gameRoom[10][10];
+	bool gameMap[10][10];
+	int coordX, coordY;
+	int winX, winY;
+	char player = 'P';
+	char map = '#';
 };
+
 
