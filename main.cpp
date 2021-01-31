@@ -15,7 +15,6 @@ int main()
         std::cout << '\n' << "Press start to start the game\n";
     } while (std::cin.get() != '\n');
     srand(time(NULL));
-    Test.generateRandomStart();
     Test.generateExit();
     Test.roomGeneration();
     do {
@@ -23,7 +22,6 @@ int main()
         std::cin >> userInput;
         if (userInput == "D" || userInput == "d") {
             Test.move();
-            srand(time(NULL));
             Test.checkRoom();
         }
         if (userInput == "M" || userInput == "m") {
@@ -38,7 +36,6 @@ int main()
         }
         if (userInput == "F" || userInput == "f") {
             P->fightMonster(E);
-            
         }
     } while (P->getHealth() > 0);
     std::cout << "---- GAME OVER ----";

@@ -1,19 +1,28 @@
 #include "Dungeon.h"
 #include <iostream>
-
 std::string user;
 
 void Dungeon::roomGeneration() {
     std::cout << "\n";
-    for (int i = tailleDungeon; i>= 0; i--) {
-        for (int j = 0; j <= tailleDungeon; j++) {
+    coordX = rand() % 10;
+    coordY = rand() % 10;
+    for (int i = tailleDungeon; i> 0; i--) {
+        for (int j = 0; j < tailleDungeon; j++) {
             if (coordX == j && coordY == i) {
                 std::cout << player;
-                gameMap[i][j] = true;
+                gameMap[j][i] = true;
             }
             else {
                 std::cout << map;
-                gameMap[i][j] = false;
+                srand(time(NULL));
+                int tempTreasure = rand() % 3;
+                int tempMonster = rand() % 4;
+                if (tempTreasure == 1) {
+                    gameRoom[j][i].treasure = true;
+                }
+                if (tempMonster == 2) {
+                    gameRoom[j][i].ennemy = true;
+                }
             }
         }
         std::cout << "\n";
@@ -25,13 +34,13 @@ void Dungeon::roomGeneration() {
 void Dungeon::checkMap() {
     std::cout << "\n";
     std::cout << "Player location : " << coordX << ", " << coordY << "\n";
-    for (int i = tailleDungeon; i >= 0; i--) {
-        for (int j = 0; j <= tailleDungeon; j++) {
+    for (int i = tailleDungeon; i > 0; i--) {
+        for (int j = 0; j < tailleDungeon; j++) {
             if (coordX == j && coordY == i) {
                 std::cout << player;
             }
             else {
-                std::cout << map;
+                    std::cout << map;
             }
         }
         std::cout << "\n";
@@ -39,34 +48,20 @@ void Dungeon::checkMap() {
 }
 
 void Dungeon::checkRoom() {
-    if (gameMap[coordX][coordY]) {
-        std::cout << "Room already explored !\n";
+    if (gameRoom[coordX][coordY].treasure) {
+        std::cout << "There is a treasure here! \n";
     }
     else {
-        int tempTreasure = rand() % 3;
-        int tempMonster = rand() % 3;
-        if(tempTreasure == 1) {
-            gameRoom[coordX][coordY].treasure = true;
-            std::cout << "There is a treasure here! \n";
-        }
-        else {
-            std::cout << "No treasure here\n";
-        }
-        if(tempMonster == 2){ 
-            gameRoom[coordX][coordY].ennemy= true;
-            std::cout << "There is a monster here!\n";
-        }
-        else {
-            std::cout << "No monster here\n";
-        }
-        gameMap[coordX][coordY] = true;
+        std::cout << "No treasure here\n";
+    }
+    if (gameRoom[coordX][coordY].treasure) {
+        std::cout << "There is a monster here!\n";
+    }
+    else {
+        std::cout << "No monster here\n";
     }
 }
 
-void Dungeon::generateRandomStart() {
-    coordX = rand() % 10;
-    coordY = rand() % 10;
-}
 
 void Dungeon::generateExit() {
     winX = rand() % 10;
