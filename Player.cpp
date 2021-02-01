@@ -41,6 +41,12 @@ void Player::gainHealth(int vit) {
     health += vit;
 }
 
+void Player::runAway() {
+    int temp = money / 2;
+    money -= temp;
+    std::cout << "You ran away! you lost : " << temp << "\n";
+}
+
 int Player::getHealth() { return health; }
 int Player::getStrenght() { return strenght; }
 int Player::getMoney() { return money; }

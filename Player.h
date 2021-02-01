@@ -9,10 +9,10 @@ public:
 	void getDamage(int dmg);
 	void gainMoney(int gold);
 	void loseMoney(int gold);
-	void fightMonster(Ennemy);
 	void heal(int pv);
 	void gainStrenght(int str);
 	void gainHealth(int vit);
+	void runAway();
 	int getHealth();
 	int getStrenght();
 	int getMoney();

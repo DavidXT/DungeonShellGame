@@ -9,6 +9,7 @@ public :
 	bool ennemy;
 	bool isVisited;
 	bool shop;
+	Ennemy *E;
 };
 
 class Shop 
@@ -30,7 +31,7 @@ public:
 	void checkAction();
 	void checkTreasure(Player*);
 	void shop(Player*);
-	void fightMonster(Player*, Ennemy);
+	void fightMonster(Player*);
 protected:
 	int tailleDungeon = 10;
 	Room gameRoom[10][10];

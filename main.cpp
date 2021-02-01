@@ -2,7 +2,6 @@
 #include <iostream>
 
 Player *P = new Player(20, 5, 0);
-Ennemy E(20,2,0);
 Dungeon dungeon;
 std::string userInput;
 
@@ -33,7 +32,7 @@ int main()
             P->checkPlayerStatus();
         }
         if (userInput == "F" || userInput == "f") {
-            dungeon.fightMonster(P, E);
+            dungeon.fightMonster(P);
         }
         if (userInput == "S" || userInput == "s") {
             dungeon.shop(P);

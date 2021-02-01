@@ -23,6 +23,7 @@ void Dungeon::roomGeneration() {
                 }
                 if (tempMonster == 2) {
                     gameRoom[j][i].ennemy = true;
+                    gameRoom[j][i].E = new Ennemy(rand() % 20 + 1, rand()%5 + 1,rand()%20 + 1);
                 }
                 if (i * j == tempShop) {
                     gameRoom[j][i].shop = true;
@@ -212,25 +213,37 @@ void Dungeon::shop(Player* p) {
     }
 }
 
-void Dungeon::fightMonster(Player *p,Ennemy E) {
+void Dungeon::fightMonster(Player *p) {
     if (gameRoom[coordX][coordY].ennemy) {
+        std::cout << "\Monster Stats : \nHP : " << gameRoom[coordX][coordY].E->getHealth() <<
+            "\nSTR :" << gameRoom[coordX][coordY].E->getHealth() << "\nGold :" << gameRoom[coordX][coordY].E->getMoney() << "\n"
+            << "Wanna fight?\n[Y]es [N]o\n";
+        std::cin >> user;
         do {
-            std::cout << "Le joueur attaque!\n";
-            E.getDamage(p->getStrenght());
-            std::cout << E.getHealth() << "HP restant au monstre.\n";
-            if (E.getHealth() > 0) {
-                std::cout << "Le monstre attaque!\n";
-                p->getDamage(E.getStrenght());
-                std::cout << p->getHealth() << "HP restant au joueur.\n";
+            if (user == "Y" || user == "y") {
+                do {
+                    std::cout << "Player attack!\n";
+                    gameRoom[coordX][coordY].E->getDamage(p->getStrenght());
+                    std::cout << gameRoom[coordX][coordY].E->getHealth() << "HP left (monster).\n";
+                    if (gameRoom[coordX][coordY].E->getHealth() > 0) {
+                        std::cout << "Monster attack!\n";
+                        p->getDamage(gameRoom[coordX][coordY].E->getStrenght());
+                        std::cout << p->getHealth() << "HP left (player).\n";
+                    }
+                    else {
+                        std::cout << "Monster is Dead!\n";
+                        std::cout << "You gain " << gameRoom[coordX][coordY].E->getMoney() << "\n";
+                        p->gainMoney(gameRoom[coordX][coordY].E->getMoney());
+                    }
+                } while (p->getHealth() > 0 && gameRoom[coordX][coordY].E->getHealth() > 0);
+                if (p->getHealth() <= 0) {
+                    std::cout << "GAME OVER\n";
+                }
             }
-            else {
-                std::cout << "Le monstre est mort!\n";
-                p->gainMoney(E.getMoney());
+            if (user == "N" || user == "n") {
+                p->runAway();
             }
-        } while (p->getHealth() > 0 && E.getHealth() > 0);
-        if (p->getHealth() <= 0) {
-            std::cout << "GAME OVER\n";
-        }
+        } while (user != "Y" && user != "y" && user != "N" && user != "n");
     }
     else {
         std::cout << "No monster here!\n";
