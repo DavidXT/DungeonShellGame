@@ -1,20 +1,21 @@
 #include "Dungeon.h"
 #include <iostream>
+#include <stdio.h>
 std::string user;
 
 void Dungeon::roomGeneration() {
     std::cout << "\n";
     coordX = rand() % 10;
     coordY = rand() % 10;
-    for (int i = tailleDungeon; i> 0; i--) {
+    for (int i = tailleDungeon; i>= 0; i--) {
         for (int j = 0; j < tailleDungeon; j++) {
             if (coordX == j && coordY == i) {
                 std::cout << player;
-                gameMap[j][i] = true;
+                gameRoom[j][i].isVisited = true;
             }
             else {
                 std::cout << map;
-                srand(time(NULL));
+                int tempShop = rand() % 50;
                 int tempTreasure = rand() % 3;
                 int tempMonster = rand() % 4;
                 if (tempTreasure == 1) {
@@ -23,6 +24,10 @@ void Dungeon::roomGeneration() {
                 if (tempMonster == 2) {
                     gameRoom[j][i].ennemy = true;
                 }
+                if (i * j == tempShop) {
+                    gameRoom[j][i].shop = true;
+                }
+                gameRoom[j][i].isVisited = false;
             }
         }
         std::cout << "\n";
@@ -40,7 +45,17 @@ void Dungeon::checkMap() {
                 std::cout << player;
             }
             else {
-                    std::cout << map;
+                if (gameRoom[j][i].shop) {
+                    std::cout << 'S';
+                }
+                else{
+                    if (gameRoom[j][i].isVisited) {
+                        std::cout << discovered;
+                    }
+                    else {
+                        std::cout << map;
+                    }
+                }
             }
         }
         std::cout << "\n";
@@ -48,17 +63,23 @@ void Dungeon::checkMap() {
 }
 
 void Dungeon::checkRoom() {
+    if (!gameRoom[coordX][coordY].isVisited) {
+        gameRoom[coordX][coordY].isVisited = true;
+    }
     if (gameRoom[coordX][coordY].treasure) {
         std::cout << "There is a treasure here! \n";
     }
     else {
         std::cout << "No treasure here\n";
     }
-    if (gameRoom[coordX][coordY].treasure) {
+    if (gameRoom[coordX][coordY].ennemy) {
         std::cout << "There is a monster here!\n";
     }
     else {
         std::cout << "No monster here\n";
+    }
+    if (gameRoom[coordX][coordY].shop) {
+        std::cout << "There is a Shop here!\n";
     }
 }
 
@@ -74,7 +95,7 @@ void Dungeon::move()
     if (coordY < tailleDungeon) {
         std::cout << "[N]orth ";
     }
-    if (coordY > 0) {
+    if (coordY > 1) {
         std::cout << "[S]outh ";
     }
     if (coordX < tailleDungeon) {
@@ -88,7 +109,7 @@ void Dungeon::move()
     if ((user == "n" || user == "N") && coordY < tailleDungeon) {
         coordY++;
     }
-    if ((user == "s" || user == "S") && coordY > 0) {
+    if ((user == "s" || user == "S") && coordY > 1) {
         coordY--;
     }
     if ((user == "e" || user == "E") && coordX < tailleDungeon) {
@@ -104,7 +125,10 @@ void Dungeon::checkAction() {
         std::cout << "You found the exit!! \nPress [E] to end the game\n";
     }
     else {
-        std::cout << "\nPlayer actions :\n\n[D]Move\n[M]ap\n[S]tatus\n";
+        std::cout << "\nPlayer actions :\n\n[D]Move\n[M]ap\n[P]layer status\n";
+        if (gameRoom[coordX][coordY].shop == true) {
+            std::cout << "[S]hop\n";
+        }
         if (gameRoom[coordX][coordY].treasure == true) {
             std::cout << "[T]reasure\n";
         }
@@ -135,6 +159,81 @@ void Dungeon::checkTreasure(Player *p) {
     }
     else {
         std::cout << "No treasure here\n";
+    }
+}
+
+void Dungeon::shop(Player* p) {
+    if (gameRoom[coordX][coordY].shop == true) {
+        if (p->getMoney() >= 10) {
+            std::cout << "Welcome customer!\n\n";
+        }
+        else {
+            std::cout << "GET OUT!\n";
+        }
+
+        if (dungeonShop.sword == true && p->getMoney() >= 20) {
+            std::cout << "Buy [S]word for 20 golds?\n";
+        }
+        if (dungeonShop.armor == true && p->getMoney() >= 35) {
+            std::cout << "Buy [A]rmor for 35 golds?\n";
+        }
+        if (p->getMoney() >= 10) {
+            std::cout << "Buy [P]otion for 10 golds?\n";
+        }
+        std::cout << "[E]xit shop.";
+        char shopInput;
+        std::cin >> shopInput;
+        switch (shopInput) {
+            case 'S':
+            case 's': 
+                dungeonShop.sword = false;
+                p->gainStrenght(3);
+                p->loseMoney(20);
+                break;
+            case'A':
+            case'a':
+                dungeonShop.armor = false;
+                p->gainHealth(10);
+                p->loseMoney(35);
+                break;
+            case 'P':
+            case 'p':
+                p->heal(5);
+                p->loseMoney(10);
+                break;
+            case 'E':
+            case 'e':
+                checkAction();
+                break;
+        }
+    }
+    else {
+        std::cout << "No shop here!\n";
+    }
+}
+
+void Dungeon::fightMonster(Player *p,Ennemy E) {
+    if (gameRoom[coordX][coordY].ennemy) {
+        do {
+            std::cout << "Le joueur attaque!\n";
+            E.getDamage(p->getStrenght());
+            std::cout << E.getHealth() << "HP restant au monstre.\n";
+            if (E.getHealth() > 0) {
+                std::cout << "Le monstre attaque!\n";
+                p->getDamage(E.getStrenght());
+                std::cout << p->getHealth() << "HP restant au joueur.\n";
+            }
+            else {
+                std::cout << "Le monstre est mort!\n";
+                p->gainMoney(E.getMoney());
+            }
+        } while (p->getHealth() > 0 && E.getHealth() > 0);
+        if (p->getHealth() <= 0) {
+            std::cout << "GAME OVER\n";
+        }
+    }
+    else {
+        std::cout << "No monster here!\n";
     }
 }
 

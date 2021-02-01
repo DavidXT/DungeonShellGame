@@ -8,12 +8,16 @@ public:
 	void checkPlayerStatus();
 	void getDamage(int dmg);
 	void gainMoney(int gold);
+	void loseMoney(int gold);
 	void fightMonster(Ennemy);
+	void heal(int pv);
+	void gainStrenght(int str);
+	void gainHealth(int vit);
 	int getHealth();
 	int getStrenght();
 	int getMoney();
-	void checkTreasure(Player);
 protected:
+	int maxHealth;
 	int health;
 	int strenght;
 	int money;

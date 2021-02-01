@@ -13,3 +13,11 @@ int Ennemy::getHealth() {
 void Ennemy::getDamage(int dmg) {
 	health -= dmg;
 }
+
+int Ennemy::getStrenght() {
+	return strenght;
+}
+
+int Ennemy::getMoney() {
+	return money;
+}

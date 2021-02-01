@@ -1,10 +1,9 @@
 #include "Dungeon.h"
-#include "Player.h"
 #include <iostream>
 
 Player *P = new Player(20, 5, 0);
 Ennemy E(20,2,0);
-Dungeon Test;
+Dungeon dungeon;
 std::string userInput;
 
 int main()
@@ -15,27 +14,29 @@ int main()
         std::cout << '\n' << "Press start to start the game\n";
     } while (std::cin.get() != '\n');
     srand(time(NULL));
-    Test.generateExit();
-    Test.roomGeneration();
+    dungeon.generateExit();
+    dungeon.roomGeneration();
     do {
-        Test.checkAction();
+        dungeon.checkAction();
         std::cin >> userInput;
         if (userInput == "D" || userInput == "d") {
-            Test.move();
-            Test.checkRoom();
+            dungeon.move();
+            dungeon.checkRoom();
         }
         if (userInput == "M" || userInput == "m") {
-            Test.checkMap();
+            dungeon.checkMap();
         }
         if (userInput == "T" || userInput == "t") {
-            srand(time(NULL));
-            Test.checkTreasure(P);
+            dungeon.checkTreasure(P);
         }
-        if (userInput == "S" || userInput == "s") {
+        if (userInput == "P" || userInput == "p") {
             P->checkPlayerStatus();
         }
         if (userInput == "F" || userInput == "f") {
-            P->fightMonster(E);
+            dungeon.fightMonster(P, E);
+        }
+        if (userInput == "S" || userInput == "s") {
+            dungeon.shop(P);
         }
     } while (P->getHealth() > 0);
     std::cout << "---- GAME OVER ----";
