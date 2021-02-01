@@ -37,7 +37,12 @@ int main()
         if (userInput == "S" || userInput == "s") {
             dungeon.shop(P);
         }
+        if (userInput == "G" || userInput == "g") {
+            dungeon.nextStages();
+        }
     } while (P->getHealth() > 0);
     std::cout << "---- GAME OVER ----";
+    P->checkPlayerStatus();
+    std::cout << "Stage : " << dungeon.getStages();
 }
 

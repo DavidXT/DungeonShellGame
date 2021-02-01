@@ -13,6 +13,8 @@ public:
 	void gainStrenght(int str);
 	void gainHealth(int vit);
 	void runAway();
+	void gainExp(int gain);
+	void gainLevel();
 	int getHealth();
 	int getStrenght();
 	int getMoney();
@@ -21,5 +23,7 @@ protected:
 	int health;
 	int strenght;
 	int money;
+	int exp;
+	int level;
 };
 

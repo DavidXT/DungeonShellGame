@@ -1,7 +1,7 @@
 #pragma once
 class Ennemy {
 public:
-	Ennemy(int _health, int _strenght, int _money);
+	Ennemy(int _health, int _strenght, int _money, int _exp);
 	void getDamage(int dmg);
 	int getHealth();
 	int getStrenght();
@@ -10,5 +10,6 @@ protected:
 	int health;
 	int strenght;
 	int money;
+	int exp;
 };
 

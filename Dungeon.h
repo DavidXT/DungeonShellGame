@@ -1,7 +1,6 @@
 #include "Ennemy.h"
 #include "Player.h"
 #pragma once
-
 class Room
 {
 public :
@@ -17,6 +16,7 @@ class Shop
 public:
 	bool sword = true;
 	bool armor = true;
+	Ennemy* ShopKeeper;
 };
 
 
@@ -32,6 +32,8 @@ public:
 	void checkTreasure(Player*);
 	void shop(Player*);
 	void fightMonster(Player*);
+	void nextStages();
+	int getStages();
 protected:
 	int tailleDungeon = 10;
 	Room gameRoom[10][10];
@@ -40,6 +42,7 @@ protected:
 	int coordY;
 	int winX;
 	int	winY;
+	int stages = 1;
 	char player = 'P';
 	char map = '#';
 	char discovered = 'X';

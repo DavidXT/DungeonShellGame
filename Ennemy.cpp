@@ -1,9 +1,10 @@
 #include "Ennemy.h"
 
-Ennemy::Ennemy(int _health, int _strenght, int _money) {
+Ennemy::Ennemy(int _health, int _strenght, int _money, int _exp) {
 	health = _health;
 	strenght = _strenght;
 	money = _money;
+	exp = _exp;
 }
 
 int Ennemy::getHealth() {
