@@ -3,10 +3,33 @@
 #include <stdio.h>
 std::string user;
 
+//COLOR
+#define RESET   "\033[0m"
+#define BLACK   "\033[30m"      /* Black */
+#define RED     "\033[31m"      /* Red */
+#define GREEN   "\033[32m"      /* Green */
+#define YELLOW  "\033[33m"      /* Yellow */
+#define BLUE    "\033[34m"      /* Blue */
+#define MAGENTA "\033[35m"      /* Magenta */
+#define CYAN    "\033[36m"      /* Cyan */
+#define WHITE   "\033[37m"      /* White */
+#define BOLDBLACK   "\033[1m\033[30m"      /* Bold Black */
+#define BOLDRED     "\033[1m\033[31m"      /* Bold Red */
+#define BOLDGREEN   "\033[1m\033[32m"      /* Bold Green */
+#define BOLDYELLOW  "\033[1m\033[33m"      /* Bold Yellow */
+#define BOLDBLUE    "\033[1m\033[34m"      /* Bold Blue */
+#define BOLDMAGENTA "\033[1m\033[35m"      /* Bold Magenta */
+#define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
+#define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
+
 void Dungeon::roomGeneration() {
     std::cout << "\n";
     coordX = rand() % 10;
     coordY = rand() % 10;
+    do {
+        winX = rand() % 9;
+        winY = rand() % 9;
+    } while (coordX == winX && coordY == winY);
     for (int i = tailleDungeon; i>= 0; i--) {
         for (int j = 0; j < tailleDungeon; j++) {
             if (coordX == j && coordY == i) {
@@ -38,7 +61,7 @@ int Dungeon::getStages() {
 }
 
 void Dungeon::checkMap() {
-    std::cout << "\n";
+    std::cout << BOLDRED << "MAP\n" << RESET;
     for (int i = tailleDungeon; i >= 0; i--) {
         for (int j = 0; j < tailleDungeon; j++) {
             if (coordX == j && coordY == i) {
@@ -49,11 +72,11 @@ void Dungeon::checkMap() {
             //}
             else {
                 if (gameRoom[j][i].shop) {
-                    std::cout << 'S';
+                    std::cout << GREEN <<'S'<< RESET;
                 }
                 else{
                     if (gameRoom[j][i].isVisited) {
-                        std::cout << discovered;
+                        std::cout << RED << map << RESET;
                     }
                     else {
                         std::cout << map;
@@ -66,30 +89,26 @@ void Dungeon::checkMap() {
 }
 
 void Dungeon::checkRoom() {
+    std::cout << "\n";
     if (!gameRoom[coordX][coordY].isVisited) {
         gameRoom[coordX][coordY].isVisited = true;
     }
     if (gameRoom[coordX][coordY].treasure) {
-        std::cout << "There is a treasure here! \n";
+        std::cout << BOLDGREEN << "There is a treasure here! \n" << RESET;
     }
     if (gameRoom[coordX][coordY].ennemy) {
-        std::cout << "There is a monster here!\n";
+        std::cout << BOLDRED << "There is a monster here!\n" << RESET;
     }
     if (gameRoom[coordX][coordY].shop) {
-        std::cout << "There is a Shop here!\n";
+        std::cout << BOLDGREEN <<"There is a Shop here!\n" << RESET;
     }
 }
 void Dungeon::nextStages() {
     if (coordX == winX && coordY == winY) {
         stages++;
         Dungeon::roomGeneration();
-        std::cout << "Welcome to stages : " << stages;
+        std::cout << BOLDRED << "Welcome to stages : " << stages << RESET;
     }
-}
-
-void Dungeon::generateExit() {
-    winX = rand() % 9;
-    winY = rand() % 9;
 }
 
 void Dungeon::move()
@@ -127,25 +146,25 @@ void Dungeon::checkAction() {
     if (coordX == winX && coordY == winY) {
         std::cout << "You found some stairs wanna go up?\n";
     }
-    std::cout << "\nPlayer actions :\n\n[D]Move\n[M]ap\n[P]layer status\n";
+    std::cout << "\nPlayer actions :\n\n" << CYAN "[D]" << RESET << "Move\n"<<CYAN <<"[M]"<< RESET "ap\n"<<CYAN"[P]"<<RESET<<"layer status\n";
     if (gameRoom[coordX][coordY].shop == true) {
-        std::cout << "[S]hop\n";
+        std::cout << CYAN << "[S]" << RESET << "hop\n";
     }
     if (gameRoom[coordX][coordY].treasure == true) {
-        std::cout << "[T]reasure\n";
+        std::cout << CYAN <<"[T]"<< RESET <<"reasure\n";
     }
     if (gameRoom[coordX][coordY].ennemy == true) {
-        std::cout << "[F]ight\n";
+        std::cout << CYAN << "[F]" << RESET << "ight\n";
     }
     if (coordX == winX && coordY == winY) {
-        std::cout << "[G]o up\n";
+        std::cout << CYAN <<"[G]" << RESET <<"o up\n";
     }
 }
 
 
 void Dungeon::checkTreasure(Player *p) {
     if (gameRoom[coordX][coordY].treasure == true) {
-        std::cout << "Open Treasure? [Y]es [N]o\n";
+        std::cout << "Open Treasure? " << CYAN << "[Y]" << RESET "es "<<CYAN<<"[N]"<<RESET"o\n";
         do {
             std::cin >> user;
         } while (user != "Y" && user != "N" && user != "y" && user != "n");
@@ -153,8 +172,8 @@ void Dungeon::checkTreasure(Player *p) {
             std::cout << "Treasure opened\n";
             int tempMoney = rand() % 30 + 20;
             p->gainMoney(tempMoney);
-            std::cout << "+" << tempMoney << "golds!\n";
-            std::cout << "Total : " << p->getMoney() << "golds!";
+            std::cout << GREEN << "+" << tempMoney << "golds!\n" ;
+            std::cout << "Total : " << p->getMoney() << "golds!" << RESET;
             gameRoom[coordX][coordY].treasure = false;
         }
         if (user == "N") {
@@ -175,16 +194,16 @@ void Dungeon::shop(Player* p) {
             std::cout << "GET OUT!\n";
         }
         if (dungeonShop.sword == true && p->getMoney() >= 20) {
-            std::cout << "Buy [S]word for 20 golds?\n";
+            std::cout << "Buy "<<CYAN<<"[S]"<<RESET<<"word for 20 golds?\n";
         }
         if (dungeonShop.armor == true && p->getMoney() >= 35) {
-            std::cout << "Buy [A]rmor for 35 golds?\n";
+            std::cout << "Buy " << CYAN << "[A]" << RESET << "rmor for 35 golds?\n";
         }
         if (p->getMoney() >= 10) {
-            std::cout << "Buy [P]otion for 10 golds?\n";
+            std::cout << "Buy " << CYAN << "[P]" << RESET << "otion for 10 golds?\n";
         }
-        std::cout << "[F]ight the shop keeper!\n";
-        std::cout << "[E]xit shop.\n";
+        std::cout << "" << CYAN << "[F]" << RESET << "ight the shop keeper!\n";
+        std::cout << "" << CYAN << "[E]" << RESET << "xit shop.\n";
         char shopInput;
         std::cin >> shopInput;
         switch (shopInput) {
@@ -207,7 +226,6 @@ void Dungeon::shop(Player* p) {
                 break;
             case 'E':
             case 'e':
-                checkAction();
                 break;
             case 'F':
             case 'f':
@@ -222,18 +240,18 @@ void Dungeon::shop(Player* p) {
 
 void Dungeon::fightMonster(Player *p) {
     if (gameRoom[coordX][coordY].ennemy) {
-        std::cout << "\Monster Stats : \n\nHP : " << gameRoom[coordX][coordY].E->getHealth() <<
-            "\nSTR :" << gameRoom[coordX][coordY].E->getStrenght() << "\nGold :" << gameRoom[coordX][coordY].E->getMoney() << "\n"
-            << "Wanna fight?\n[Y]es [N]o\n";
+        std::cout << RED << "\------- Monster Stats ------- \n\nHP : " << gameRoom[coordX][coordY].E->getHealth() <<
+            "\nSTR :" << gameRoom[coordX][coordY].E->getStrenght() << "\nGold :" << gameRoom[coordX][coordY].E->getMoney() <<"\n-----------------------------" << RESET << "\n"
+            << "Wanna fight?\n" << CYAN << "[Y]" << RESET << "es " << CYAN << "[N]" << RESET << "o\n";
         std::cin >> user;
         do {
             if (user == "Y" || user == "y") {
                 do {
-                    std::cout << "Player attack!\n";
+                    std::cout << GREEN << "Player attack!\n" << RESET;
                     gameRoom[coordX][coordY].E->getDamage(p->getStrenght());
                     std::cout << gameRoom[coordX][coordY].E->getHealth() << "HP left (monster).\n";
                     if (gameRoom[coordX][coordY].E->getHealth() > 0) {
-                        std::cout << "Monster attack!\n";
+                        std::cout << RED << "Monster attack!\n" << RESET;
                         p->getDamage(gameRoom[coordX][coordY].E->getStrenght());
                         std::cout << p->getHealth() << "HP left (player).\n";
                     }

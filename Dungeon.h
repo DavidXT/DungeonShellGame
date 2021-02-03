@@ -26,7 +26,6 @@ public:
 	void roomGeneration();
 	void checkMap();
 	void checkRoom();
-	void generateExit();
 	void move();
 	void checkAction();
 	void checkTreasure(Player*);
