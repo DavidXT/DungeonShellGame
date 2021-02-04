@@ -34,7 +34,7 @@ public:
 	void checkTreasure(Player*);
 	void shop(Player*);
 	void fightMonster(Player*);
-	void nextStages();
+	void nextStages(Player*);
 	int getStages();
 protected:
 	int tailleDungeon = 10;

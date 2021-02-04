@@ -32,7 +32,7 @@ Player::Player(int _health, int _strenght, int _money) {
 };
 void Player::checkPlayerStatus() {
     std::cout << BOLDGREEN << "\n -------- Player Stats -------- \nLevel : " << level << "\nHP : " << health << "/" << maxHealth <<
-        "\nSTR : " << strenght << "\nGold : " << money << "\n ------------------------------ \n" << RESET;
+        "\nSTR : " << strenght << "\nExperience : "<< exp << "\nGold : " << money << "\n ------------------------------ \n" << RESET;
 }
 
 
@@ -87,6 +87,7 @@ void Player::showInventory() {
         std::cin >> userInput;
         if (userInput == "Y" || userInput == "y") {
             heal(10);
+            healPotion--;
         }
     }
 
@@ -100,6 +101,7 @@ void Player::gainSwordLevel() {
 
 void Player::gainArmorLevel() {
     armorLevel++;
+    maxHealth += 2 * armorLevel;
     health += 2 * armorLevel;
 }
 
@@ -138,10 +140,12 @@ void Player::heal(int pv) {
 }
 void Player::gainExp(int gain) {
     exp += gain;
-    do {
-        gainLevel();
-        exp -= 100;
-    } while (exp >= 100);
+    if (exp >= 100) {
+        do {
+            gainLevel();
+            exp -= 100;
+        } while (exp >= 100);
+    }
 }
 
 void Player::gainLevel() {

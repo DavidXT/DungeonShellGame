@@ -38,6 +38,10 @@ void Dungeon::roomGeneration() {
                 gameRoom[j][i].shop = true;
                 gameRoom[j][i].E = new Ennemy(100*stages,50*stages,100000*stages, 1000*stages);
             }
+            else if (winX == j && winY == i) {
+                gameRoom[j][i].ennemy = true;
+                gameRoom[j][i].E = new Ennemy(100 * stages, 7 * stages, 50 * stages, 100 * stages);
+            }
             else {
                 int tempTreasure = rand() % 3;
                 int tempMonster = rand() % 4;
@@ -65,6 +69,8 @@ void Dungeon::checkMap() {
         for (int j = 0; j < tailleDungeon; j++) {
             if (coordX == j && coordY == i) {
                 std::cout << player;
+            }        else    if (winX == j && winY == i) {
+                std::cout << "E";
             }
             else {
                 if (gameRoom[j][i].shop) {
@@ -94,18 +100,27 @@ void Dungeon::checkRoom() {
     if (gameRoom[coordX][coordY].treasure) {
         std::cout << BOLDGREEN << "There is a treasure here! \n" << RESET;
     }
-    if (gameRoom[coordX][coordY].ennemy) {
+    if (gameRoom[coordX][coordY].ennemy && (winX != coordX && winY != coordY)) {
         std::cout << BOLDRED << "There is a monster here!\n" << RESET;
     }
     if (gameRoom[coordX][coordY].shop) {
         std::cout << BOLDGREEN <<"There is a Shop here!\n" << RESET;
     }
 }
-void Dungeon::nextStages() {
+void Dungeon::nextStages(Player *p) {
     if (coordX == winX && coordY == winY) {
-        stages++;
-        Dungeon::roomGeneration();
-        std::cout << BOLDRED << "Welcome to stages : " << stages << RESET;
+        if (gameRoom[coordX][coordY].ennemy) {
+            std::cout << "\nA monster block the staires\n";
+            fightMonster(p);
+            stages++;
+            Dungeon::roomGeneration();
+            std::cout << BOLDRED << "\nWelcome to stages : " << stages << RESET <<"\n";
+        }
+        else {
+            stages++;
+            Dungeon::roomGeneration();
+            std::cout << BOLDRED << "\nWelcome to stages : " << stages << RESET <<"\n";
+        }
     }
 }
 
@@ -151,7 +166,7 @@ void Dungeon::checkAction() {
     if (gameRoom[coordX][coordY].treasure == true) {
         std::cout << CYAN <<"[T]"<< RESET <<"reasure\n";
     }
-    if (gameRoom[coordX][coordY].ennemy == true) {
+    if (gameRoom[coordX][coordY].ennemy == true && (winY != coordY && winX != coordX)) {
         std::cout << CYAN << "[F]" << RESET << "ight\n";
     }
     if (coordX == winX && coordY == winY) {
@@ -227,7 +242,7 @@ void Dungeon::shop(Player* p) {
                     if (dungeonShop.armor == true) {
                         dungeonShop.armor = false;
                     }
-                    p->getArmorLevel();
+                    p->gainArmorLevel();
                     p->loseMoney(dungeonShop.armorprice);
                     std::cout << "Thanks you for your purchase\n";
                     dungeonShop.armorprice += 15;
@@ -238,7 +253,7 @@ void Dungeon::shop(Player* p) {
                 p->loseMoney(dungeonShop.potionprice);
                 std::cout << "Thanks you for your purchase\n";
             }
-            if (shopInput == 'P' || shopInput == 'p') {
+            if (shopInput == 'F' || shopInput == 'f') {
                 gameRoom[coordX][coordY].ennemy = true;
                 fightMonster(p);
             }

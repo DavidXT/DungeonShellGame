@@ -48,7 +48,7 @@ int main()
         }
         if (userInput == "G" || userInput == "g") {
             std::cout << "\033c";
-            dungeon.nextStages();
+            dungeon.nextStages(P);
         }
     } while (P->getHealth() > 0);
     std::cout << "---- GAME OVER ----";
