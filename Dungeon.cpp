@@ -189,63 +189,60 @@ void Dungeon::shop(Player* p) {
             std::cout << "Welcome customer!\n\n";
         }
         else {
-            std::cout << "GET OUT!\n";
+            std::cout << "You don't have enough money to buy anything!\n";
         }
-        if (dungeonShop.sword == true && p->getMoney() >= 20) {
-            std::cout << "Buy "<<CYAN<<"[S]"<<RESET<<"word for 20 golds?\n";
-        }
-        else if (dungeonShop.sword == false && p->getMoney() >= 30 && p->getSwordLevel() > 5) {
-            std::cout << "Upgrade " << CYAN << "[S]" << RESET "word for 30 golds?\n";
-        }
-        if (dungeonShop.armor == true && p->getMoney() >= 35) {
-            std::cout << "Buy " << CYAN << "[A]" << RESET << "rmor for 35 golds?\n";
-        }
-        else if (dungeonShop.armor == false && p->getMoney() >= 50 && p->getArmorLevel() > 5) {
-            std::cout << "Upgrade " << CYAN << "[A]" << RESET "rmor for 50 golds?\n";
-        }
-        if (p->getMoney() >= 10) {
-            std::cout << "Buy " << CYAN << "[P]" << RESET << "otion for 10 golds?\n";
-        }
-        std::cout << "" << CYAN << "[F]" << RESET << "ight the shop keeper!\n";
-        std::cout << "" << CYAN << "[E]" << RESET << "xit shop.\n";
         char shopInput;
-        std::cin >> shopInput;
-        switch (shopInput) {
-            case 'S':
-            case 's': 
-                if (p->getSwordLevel() > 5) {
+        do {
+            if (dungeonShop.sword == true && p->getMoney() >= dungeonShop.swordprice) {
+                std::cout << "Buy "<<CYAN<<"[S]"<<RESET<<"word for " << dungeonShop.swordprice << " golds?\n";
+            }
+            else if (dungeonShop.sword == false && p->getMoney() >= dungeonShop.swordprice && p->getSwordLevel() < 5) {
+                std::cout << "Upgrade " << CYAN << "[S]" << RESET "word for "<< dungeonShop.swordprice <<" golds?\n";
+            }
+            if (dungeonShop.armor == true && p->getMoney() >= dungeonShop.armorprice) {
+                std::cout << "Buy " << CYAN << "[A]" << RESET << "rmor for " << dungeonShop.armorprice << " golds?\n";
+            }
+            else if (dungeonShop.armor == false && p->getMoney() >= dungeonShop.armorprice && p->getArmorLevel() < 5) {
+                std::cout << "Upgrade " << CYAN << "[A]" << RESET "rmor for " << dungeonShop.armorprice << " golds?\n";
+            }
+            if (p->getMoney() >= 10) {
+                std::cout << "Buy " << CYAN << "[P]" << RESET << "otion for 10 golds?\n";
+            }
+            std::cout << "" << CYAN << "[F]" << RESET << "ight the shop keeper!\n";
+            std::cout << "" << CYAN << "[E]" << RESET << "xit shop.\n";
+            std::cin >> shopInput;
+            if (shopInput == 'S' || shopInput == 's') {
+                if (p->getSwordLevel() < 5) {
                     if (dungeonShop.sword == true) {
-                        dungeonShop.swordprice = 30;
                         dungeonShop.sword = false;
                     }
                     p->gainSwordLevel();
                     p->loseMoney(dungeonShop.swordprice);
+                    std::cout << "Thanks you for your purchase\n";
+                    dungeonShop.swordprice += 10;
                 }
-                break;
-            case'A':
-            case'a':
-                if (p->getArmorLevel() > 5) {
+            }
+            if (shopInput == 'A' || shopInput == 'a') {
+                if (p->getArmorLevel() < 5) {
                     if (dungeonShop.armor == true) {
-                        dungeonShop.armorprice = 50;
                         dungeonShop.armor = false;
                     }
                     p->getArmorLevel();
                     p->loseMoney(dungeonShop.armorprice);
+                    std::cout << "Thanks you for your purchase\n";
+                    dungeonShop.armorprice += 15;
                 }
-                break;
-            case 'P':
-            case 'p':
+            }
+            if (shopInput == 'P' || shopInput == 'p') {
                 p->addHealPotion();
                 p->loseMoney(dungeonShop.potionprice);
-                break;
-            case 'E':
-            case 'e':
-                break;
-            case 'F':
-            case 'f':
+                std::cout << "Thanks you for your purchase\n";
+            }
+            if (shopInput == 'P' || shopInput == 'p') {
                 gameRoom[coordX][coordY].ennemy = true;
                 fightMonster(p);
-        }
+            }
+        } while (shopInput != 'E' && shopInput !='e');
     }
     else {
         std::cout << "No shop here!\n";
