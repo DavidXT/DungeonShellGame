@@ -31,8 +31,8 @@ Player::Player(int _health, int _strenght, int _money) {
     healPotion = 0;
 };
 void Player::checkPlayerStatus() {
-    std::cout << BOLDGREEN << "\n -------- Player Stats -------- \nHP : " << health << "/" << maxHealth <<
-        "\nSTR :" << strenght << "\nGold :" << money << "\n ------------------------------ \n" << RESET;
+    std::cout << BOLDGREEN << "\n -------- Player Stats -------- \nLevel : " << level << "\nHP : " << health << "/" << maxHealth <<
+        "\nSTR : " << strenght << "\nGold : " << money << "\n ------------------------------ \n" << RESET;
 }
 
 
@@ -80,7 +80,7 @@ void Player::showInventory() {
             std::cout << "Adamantium Armor\n";
             break;
     }
-    std::cout << CYAN<<"[H]"<<RESET<<"eal Potion :" << getHealPotion() <<"\n";
+    std::cout << "Heal Potion : " << getHealPotion() <<"\n";
     if (getHealPotion() > 0) {
         std::cout << "Use a Heal Potion? "<<CYAN<<"[Y]"<<RESET<<"es"<<CYAN<<" [N]"<<RESET<<"o\n";
         std::string userInput;

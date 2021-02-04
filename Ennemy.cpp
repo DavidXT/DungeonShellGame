@@ -22,3 +22,7 @@ int Ennemy::getStrenght() {
 int Ennemy::getMoney() {
 	return money;
 }
+
+int Ennemy::getExp() {
+	return exp;
+}

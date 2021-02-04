@@ -6,6 +6,7 @@ public:
 	int getHealth();
 	int getStrenght();
 	int getMoney();
+	int getExp();
 protected:
 	int health;
 	int strenght;

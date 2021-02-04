@@ -10,7 +10,7 @@ int main()
     std::cout << "----- Game Start ! -----\n";
     do
     {
-        std::cout << '\n' << "Press start to start the game\n";
+        std::cout << '\n' << "Press start to continue\n";
     } while (std::cin.get() != '\n');
     srand(time(NULL));
     dungeon.roomGeneration();
