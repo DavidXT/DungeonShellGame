@@ -34,13 +34,11 @@ void Dungeon::roomGeneration() {
         std::cout << "      ";
         for (int j = 0; j < tailleDungeon; j++) {
             if (coordX == j && coordY == i) {
-                std::cout << player;
                 gameRoom[j][i].isVisited = true;
                 gameRoom[j][i].shop = true;
                 gameRoom[j][i].E = new Ennemy(100*stages,50*stages,100000*stages, 1000*stages);
             }
             else {
-                std::cout << map;
                 int tempTreasure = rand() % 3;
                 int tempMonster = rand() % 4;
                 if (tempTreasure == 1) {
@@ -48,12 +46,11 @@ void Dungeon::roomGeneration() {
                 }
                 if (tempMonster == 2) {
                     gameRoom[j][i].ennemy = true;
-                    gameRoom[j][i].E = new Ennemy((rand() % 21 + 1)*stages, (rand()%6 + 1)*stages,(rand()%21 + 10)*stages, (rand()%31 + 10)*stages);
+                    gameRoom[j][i].E = new Ennemy((rand() % 31 + 10)*stages, (rand()%11 + 1)*stages,(rand()%26 + 10)*stages, (rand()%36 + 10)*stages);
                 }
                 gameRoom[j][i].isVisited = false;
             }
         }
-        std::cout << "\n";
     }
 }
 
@@ -69,9 +66,6 @@ void Dungeon::checkMap() {
             if (coordX == j && coordY == i) {
                 std::cout << player;
             }
-            //else if (winX == j && winY == i) {
-            //    std::cout << "E";
-            //}
             else {
                 if (gameRoom[j][i].shop) {
                     std::cout << GREEN <<'S'<< RESET;
