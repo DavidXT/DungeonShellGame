@@ -146,7 +146,7 @@ void Dungeon::checkAction() {
     if (coordX == winX && coordY == winY) {
         std::cout << "You found some stairs wanna go up?\n";
     }
-    std::cout << "\nPlayer actions :\n\n" << CYAN "[D]" << RESET << "Move\n"<<CYAN <<"[M]"<< RESET "ap\n"<<CYAN"[P]"<<RESET<<"layer status\n";
+    std::cout << "\nPlayer actions :\n\n" << CYAN "[D]" << RESET << "Move\n"<<CYAN <<"[M]"<< RESET "ap\n"<<CYAN"[P]"<<RESET<<"layer status\n"<<CYAN<<"[I]"<<RESET<<"nventory\n";
     if (gameRoom[coordX][coordY].shop == true) {
         std::cout << CYAN << "[S]" << RESET << "hop\n";
     }
@@ -196,8 +196,14 @@ void Dungeon::shop(Player* p) {
         if (dungeonShop.sword == true && p->getMoney() >= 20) {
             std::cout << "Buy "<<CYAN<<"[S]"<<RESET<<"word for 20 golds?\n";
         }
+        else if (dungeonShop.sword == false && p->getMoney() >= 30 && p->getSwordLevel() > 5) {
+            std::cout << "Upgrade " << CYAN << "[S]" << RESET "word for 30 golds?\n";
+        }
         if (dungeonShop.armor == true && p->getMoney() >= 35) {
             std::cout << "Buy " << CYAN << "[A]" << RESET << "rmor for 35 golds?\n";
+        }
+        else if (dungeonShop.armor == false && p->getMoney() >= 50 && p->getArmorLevel() > 5) {
+            std::cout << "Upgrade " << CYAN << "[A]" << RESET "rmor for 50 golds?\n";
         }
         if (p->getMoney() >= 10) {
             std::cout << "Buy " << CYAN << "[P]" << RESET << "otion for 10 golds?\n";
@@ -209,20 +215,26 @@ void Dungeon::shop(Player* p) {
         switch (shopInput) {
             case 'S':
             case 's': 
+                if (dungeonShop.sword == true) {
+                    dungeonShop.swordprice = 30;
+                }
                 dungeonShop.sword = false;
-                p->gainStrenght(3);
-                p->loseMoney(20);
+                p->gainSwordLevel();
+                p->loseMoney(dungeonShop.swordprice);
                 break;
             case'A':
             case'a':
+                if (dungeonShop.armor == true) {
+                    dungeonShop.armorprice = 50;
+                }
                 dungeonShop.armor = false;
-                p->gainHealth(10);
-                p->loseMoney(35);
+                p->getArmorLevel();
+                p->loseMoney(dungeonShop.armorprice);
                 break;
             case 'P':
             case 'p':
-                p->heal(5);
-                p->loseMoney(10);
+                p->addHealPotion();
+                p->loseMoney(dungeonShop.potionprice);
                 break;
             case 'E':
             case 'e':

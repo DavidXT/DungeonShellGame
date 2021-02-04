@@ -26,17 +26,102 @@ Player::Player(int _health, int _strenght, int _money) {
     maxHealth = health;
     exp = 0;
     level = 1;
+    swordLevel = 0;
+    armorLevel = 0;
+    healPotion = 0;
 };
 void Player::checkPlayerStatus() {
     std::cout << BOLDGREEN << "\n -------- Player Stats -------- \nHP : " << health << "/" << maxHealth <<
         "\nSTR :" << strenght << "\nGold :" << money << "\n ------------------------------ \n" << RESET;
 }
 
+
+void Player::showInventory() {
+    std::cout << "\n---------- PLAYER INVENTORY ----------\n\n";
+    std::cout << "Sword : ";
+    switch (swordLevel) {
+        case 0: 
+            std::cout << "No Sword\n"; 
+            break;
+        case 1:
+            std::cout << "Wooden Sword\n";
+            break;
+        case 2:
+            std::cout << "Iron Sword\n";
+            break;
+        case 3:
+            std::cout << "Golden Sword\n";
+            break;
+        case 4:
+            std::cout << "Diamond Sword\n";
+            break;
+        case 5:
+            std::cout << "Excalibur";
+            break;
+    }
+    std::cout << "Armor : ";
+    switch (armorLevel) {
+        case 0:
+            std::cout << "No Armor\n";
+            break;
+        case 1:
+            std::cout << "Wool Shirt\n";
+            break;
+        case 2:
+            std::cout << "Iron Armor\n";
+            break;
+        case 3:
+            std::cout << "Golden Armor\n";
+            break;
+        case 4:
+            std::cout << "Diamond Armor\n";
+            break;
+        case 5:
+            std::cout << "Adamantium Armor\n";
+            break;
+    }
+    std::cout << CYAN<<"[H]"<<RESET<<"eal Potion :" << getHealPotion() <<"\n";
+    if (getHealPotion() > 0) {
+        std::cout << "Use a Heal Potion? "<<CYAN<<"[Y]"<<RESET<<"es"<<CYAN<<" [N]"<<RESET<<"o\n";
+        std::string userInput;
+        std::cin >> userInput;
+        if (userInput == "Y" || userInput == "y") {
+            heal(10);
+        }
+    }
+
+    std::cout << "\n--------------------------------------\n";
+}
+
+void Player::gainSwordLevel() {
+    swordLevel++;
+    strenght += 2 * swordLevel;
+}
+
+void Player::gainArmorLevel() {
+    armorLevel++;
+    health += 2 * armorLevel;
+}
+
+void Player::addHealPotion() {
+    healPotion++;
+}
 void Player::getDamage(int dmg) {
 	health -= dmg;
 }
 void Player::gainMoney(int gold) { 
 	money += gold; 
+}
+
+int Player::getSwordLevel() {
+    return swordLevel;
+}
+int Player::getArmorLevel() {
+    return armorLevel;
+}
+
+int Player::getHealPotion() {
+    return healPotion;
 }
 
 void Player::loseMoney(int gold) {

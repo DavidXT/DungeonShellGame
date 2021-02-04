@@ -34,6 +34,10 @@ int main()
             std::cout << "\033c";
             P->checkPlayerStatus();
         }
+        if (userInput == "I" || userInput == "i") {
+            std::cout << "\033c";
+            P->showInventory();
+        }
         if (userInput == "F" || userInput == "f") {
             std::cout << "\033c";
             dungeon.fightMonster(P);

@@ -16,6 +16,9 @@ class Shop
 public:
 	bool sword = true;
 	bool armor = true;
+	int swordprice = 20;
+	int armorprice = 35;
+	int potionprice = 10;
 	Ennemy* ShopKeeper;
 };
 
