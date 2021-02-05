@@ -69,9 +69,10 @@ void Dungeon::checkMap() {
         for (int j = 0; j < tailleDungeon; j++) {
             if (coordX == j && coordY == i) {
                 std::cout << player;
-            }        else    if (winX == j && winY == i) {
-                std::cout << "E";
-            }
+            }        
+            //else    if (winX == j && winY == i) {
+            //    std::cout << "E";
+            //}
             else {
                 if (gameRoom[j][i].shop) {
                     std::cout << GREEN <<'S'<< RESET;
