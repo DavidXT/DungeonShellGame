@@ -269,8 +269,8 @@ void Dungeon::fightMonster(Player *p) {
         std::cout << RED << "\------- Monster Stats ------- \n\nHP : " << gameRoom[coordX][coordY].E->getHealth() <<
             "\nSTR :" << gameRoom[coordX][coordY].E->getStrenght() << "\nGold :" << gameRoom[coordX][coordY].E->getMoney() <<"\n-----------------------------" << RESET << "\n"
             << "Wanna fight?\n" << CYAN << "[Y]" << RESET << "es " << CYAN << "[N]" << RESET << "o\n";
-        std::cin >> user;
         do {
+            std::cin >> user;
             if (user == "Y" || user == "y") {
                 do {
                     std::cout << GREEN << "Player attack!\n" << RESET;
