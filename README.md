@@ -1,8 +1,6 @@
-# Introduction au C++
+# Dungeon Explorer
 
-Classe: GTech3  
-Nom: Nguyen
-Prénom: David
+#### Petit dungeon explorer jouable dans la console shell
 
 
 
